@@ -2,9 +2,9 @@
     <t t-name="awesome_owl.todoList">
 
         <div>
-	        <input t-on-keyup="addTodo" placeholder="Enter a new task" t-ref="input"></input>
+	        <input t-on-keyup="addTodo" placeholder="Enter a new task" t-ref="input" ></input>
 	        <t t-foreach="todos" t-as="todo" t-key="todo.id" >
-                <TodoItem t-props="{ todo: todo }"/>
+				<TodoItem t-props="{ todo: todo, toggleState: toggleState, removeTodo: removeTodo }"/>
             </t>
         </div>
 

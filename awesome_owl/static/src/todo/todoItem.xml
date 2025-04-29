@@ -2,8 +2,14 @@
     <t t-name="awesome_owl.todoItem">
         <div t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
 
-            <p>
+            <p style="margin-top: 5%">
+	            <input type="checkbox" style="margin-right: 10px"
+	                   t-att-checked="props.todo.isCompleted"
+	                   t-on-change="() => props.toggleState(props.todo.id)"/>
                 <t t-esc="props.todo.id"/> - <t t-esc="props.todo.description"/>
+	            <span class="fa fa-remove" style="margin-left: 10px; cursor: pointer; color: red"
+	                  t-on-click="() => props.removeTodo(props.todo.id)"/>
+
             </p>
         </div>
     </t>
