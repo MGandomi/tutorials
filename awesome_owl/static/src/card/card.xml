@@ -1,22 +1,18 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body" >
+        <div class="card" style="width: 18rem; margin: 10px;">
+            <div class="card-body">
                 <h5 class="card-title">
                     <t t-esc="props.title"/>
                 </h5>
-
-                <t t-if="props.isMarkup">
-                    <p class="card-text" >
-                        <t t-out="props.content"/>
-                    </p>
-                </t>
-                <t t-else="">
-                    <p class="card-text">
+                <p class="card-text">
+                    <t t-if="props.isMarkup">
+                        <t t-raw="props.content"/>
+                    </t>
+                    <t t-else="">
                         <t t-esc="props.content"/>
-                    </p>
-                </t>
-
+                    </t>
+                </p>
             </div>
         </div>
     </t>

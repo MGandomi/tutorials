@@ -7,18 +7,17 @@ import { Card } from './card/card';
 export class Playground extends Component {
     static template = "awesome_owl.playground";
     static components = { Counter, Card };
+	static props={}
 
-	static props = {};
-
-    setup(){
-        this.state = useState({ value: 0 });
-
-
+    setup() {
+        this.sum = useState({ value: 0 });
         this.xml1 = markup("<div>This is the content of card 1</div>");
         this.xml2 = markup("<div>This is the content of card 2</div>");
+
+		this.incrementSum = this.incrementSum.bind(this);
     }
 
-    increment(){
-        this.state.value++;
+    incrementSum() {
+        this.sum.value += 1;
     }
 }
