@@ -1,7 +1,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
         <div class="container py-5">
-
+			<!--counter -->
             <div class="card shadow-sm mb-5">
                 <div class="card-body">
                     <div class="row text-center">
@@ -32,23 +32,24 @@
                 </div>
             </div>
 
+	        <!--card -->
+
+
 	        <div class="row g-4 justify-content-center">
 	            <div class="col-12 col-md-5">
 	                <div class="card h-100">
-	                    <div class="card-body">
-	                        <Card t-props="{ title: 'Card 1', content: 'This is simple text.', isMarkup: false }"/>
-	                    </div>
-	                </div>
-	            </div>
-
-		        <div class="col-12 col-md-5">
-	                <div class="card h-100">
-	                    <div class="card-body">
-	                        <Card t-props="{ title: 'Card 2', content: '&lt;div style=&quot;color:red&quot;&gt;This is HTML content&lt;/div&gt;', isMarkup: true }"/>
-	                    </div>
+		                <Card title="'card 1'">
+		                    content of card 1
+			             </Card>
+		                <Card title="'card 2'">
+			                 content of card 2
+			             </Card>
 	                </div>
 	            </div>
 	        </div>
+
+
+	        <!--to do list -->
 
 	        <div class="row justify-content-center mt-5">
                 <div class="col-12 col-md-6">

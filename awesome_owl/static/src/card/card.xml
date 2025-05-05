@@ -13,6 +13,9 @@
                         <t t-esc="props.content"/>
                     </t>
                 </p>
+	            <p class="card-text">
+                     <t t-slot="default"/>
+	            </p>
             </div>
         </div>
     </t>
