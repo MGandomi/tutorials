@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout displayProps="{ controlPanel: {} }" className="'o_dashboard h-100'">
+	<t t-name="awesome_dashboard.AwesomeDashboard" >
+	    <Layout displayProps="{ controlPanel: {} }" className="'o_dashboard h-100'">
 	        <div class="awesome_content">
 	            <h1>Welcome to the Awesome Dashboard!</h1>
+	            <button t-on-click="openCustomers" class="btn btn-primary mt-3">
+	                Customers
+	            </button>
+	            <button t-on-click="openLeads" class="btn btn-secondary mt-3">
+	                Leads
+	            </button>
 	        </div>
 	    </Layout>
-    </t>
+	</t>
 
 </templates>
