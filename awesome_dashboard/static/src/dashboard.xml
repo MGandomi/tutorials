@@ -1,17 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-	<t t-name="awesome_dashboard.AwesomeDashboard" >
-	    <Layout displayProps="{ controlPanel: {} }" className="'o_dashboard h-100'">
-	        <div class="awesome_content">
-	            <h1>Welcome to the Awesome Dashboard!</h1>
-	            <button t-on-click="openCustomers" class="btn btn-primary mt-3">
-	                Customers
-	            </button>
-	            <button t-on-click="openLeads" class="btn btn-secondary mt-3">
-	                Leads
-	            </button>
-	        </div>
-	    </Layout>
-	</t>
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout displayProps="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <div class="awesome_content d-flex flex-column gap-4">
 
+                <div class="buttons d-flex gap-3">
+                    <button t-on-click="openCustomers" class="btn btn-primary">Customers</button>
+                    <button t-on-click="openLeads" class="btn btn-secondary">Leads</button>
+                    <h4 style="margin: 5px">Dashboard</h4>
+                </div>
+
+                <div class="cards d-flex flex-wrap gap-3 rounded p-3" style="background: lightslategrey">
+                    <DashboardItem class="m-2">
+                        <table class="table table-bordered table-hover bg-white text-center" style="border: black ; margin-top: 20px" >
+                            <thead>
+                                <tr><th class="py-4 fs-5">Some Content</th></tr>
+                            </thead>
+                        </table>
+                    </DashboardItem>
+
+                    <DashboardItem size="2" class="m-2">
+                        <table class="table table-bordered table-hover bg-white text-center" style="border: black ; margin-top: 20px">
+                            <thead>
+                                <tr><th class="py-4 fs-5">I love milk!</th></tr>
+                            </thead>
+                        </table>
+                    </DashboardItem>
+
+                    <DashboardItem class="m-2">
+                        <table class="table table-bordered table-hover bg-white text-center" style="border: black ; margin-top: 20px">
+                            <thead>
+                                <tr><th class="py-4 fs-5">Some Content</th></tr>
+                            </thead>
+                        </table>
+                    </DashboardItem>
+                </div>
+
+            </div>
+        </Layout>
+    </t>
 </templates>
