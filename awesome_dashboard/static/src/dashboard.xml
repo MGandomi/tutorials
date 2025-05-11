@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Dashboard Cards -->
-                <div class="cards rounded p-4" style="background: lightslategrey;">
+                <div class="cards rounded p-4" style="background: lightslategrey;" t-if="statistics.isReady">
 
                     <!-- First Row: Three Cards -->
                     <div class="row mb-4">
