@@ -2,136 +2,22 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout displayProps="{ controlPanel: {} }" className="'o_dashboard h-100'">
             <div class="awesome_content d-flex flex-column gap-4">
-
-                <!-- Action Buttons -->
                 <div class="buttons d-flex align-items-center gap-3 my-3 mx-4">
                     <button t-on-click="openCustomers" class="btn btn-primary">Customers</button>
                     <button t-on-click="openLeads" class="btn btn-secondary">Leads</button>
                     <h4 class="mb-0">Dashboard</h4>
                 </div>
 
-                <!-- Dashboard Cards -->
-                <div class="cards rounded p-4" style="background: lightslategrey;" t-if="statistics.isReady">
-
-                    <!-- First Row: Three Cards -->
-                    <div class="row mb-4">
-                        <!-- First Column (first card in first row) -->
-                        <div class="col-12 col-md-4">
-                            <!-- Average Quantity -->
-                            <DashboardItem class="m-2">
-                                <table class="table bg-white text-center border border-dark">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="fw-bold mb-2">Average amount of t-shirt by order this month</div>
-                                                <div class="fs-1 text-success">
-                                                    <t t-esc="statistics.average_quantity" />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </DashboardItem>
-                        </div>
-
-                        <!-- Second Column (second card in first row) -->
-                        <div class="col-12 col-md-4">
-                            <!-- Average Time -->
-                            <DashboardItem class="m-2">
-                                <table class="table bg-white text-center border border-dark">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="fw-bold mb-2">Average time for an order to go from 'new' to 'sent' or 'cancelled'</div>
-                                                <div class="fs-1 text-success">
-                                                    <t t-esc="statistics.average_time" />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </DashboardItem>
-                        </div>
-
-                        <!-- Third Column (third card in first row) -->
-                        <div class="col-12 col-md-4">
-                            <!-- New Orders -->
-                            <DashboardItem class="m-2">
-                                <table class="table bg-white text-center border border-dark">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="fw-bold mb-2">Number of new orders this month</div>
-                                                <div class="fs-1 text-success">
-                                                    <t t-esc="statistics.nb_new_orders" />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </DashboardItem>
-                        </div>
+                <div class="cards rounded p-4" t-if="statistics.isReady">
+                    <div class="row g-4">
+                        <t t-foreach="items" t-as="item" t-key="item.id">
+                            <div class="col-12 col-md-4">
+                                <DashboardItem>
+                                    <t t-component="item.Component" t-props="item.props(statistics)" />
+                                </DashboardItem>
+                            </div>
+                        </t>
                     </div>
-
-                    <!-- Second Row: Two Cards + Pie Chart -->
-                    <div class="row">
-                        <!-- First Column (first card in second row) -->
-                        <div class="col-12 col-md-4">
-                            <!-- Cancelled Orders -->
-                            <DashboardItem class="m-2">
-                                <table class="table bg-white text-center border border-dark" style="height: 305px">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="fw-bold mb-2">Number of cancelled orders this month</div>
-                                                <div class="fs-1 text-success">
-                                                    <t t-esc="statistics.nb_cancelled_orders" />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </DashboardItem>
-                        </div>
-
-                        <!-- Second Column (second card in second row) -->
-                        <div class="col-12 col-md-4">
-                            <!-- Total Amount -->
-                            <DashboardItem class="m-2">
-                                <table class="table bg-white text-center border border-dark" style="height: 305px">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="fw-bold mb-2">Total amount of new orders this month</div>
-                                                <div class="fs-1 text-success">
-                                                    <t t-esc="statistics.total_amount" />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </DashboardItem>
-                        </div>
-
-                        <!-- Third Column (Pie chart) -->
-                        <div class="col-12 col-md-4">
-                            <DashboardItem class="m-2">
-                                <table class="table bg-white text-center border border-dark" style="height: 250px">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="fw-bold mb-2">Shirt orders by size</div>
-                                                <div style="height: 250px;">
-                                                    <PieChart t-props="{ data: statistics.orders_by_size, label: 'Shirt orders by size' }"/>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </DashboardItem>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </Layout>
