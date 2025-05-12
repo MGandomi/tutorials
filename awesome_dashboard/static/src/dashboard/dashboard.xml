@@ -6,11 +6,15 @@
                     <button t-on-click="openCustomers" class="btn btn-primary">Customers</button>
                     <button t-on-click="openLeads" class="btn btn-secondary">Leads</button>
                     <h4 class="mb-0">Dashboard</h4>
+	                <button t-on-click="openSettings" class="btn p-0 ms-1 border-0">
+	                    <i class="fa fa-cog"></i>
+	                </button>
                 </div>
 
                 <div class="cards rounded p-4" t-if="statistics.isReady">
                     <div class="row g-4">
-                        <t t-foreach="items" t-as="item" t-key="item.id">
+                        <!-- Use filteredItems instead of items -->
+                        <t t-foreach="filteredItems" t-as="item" t-key="item.id">
                             <div class="col-12 col-md-4">
                                 <DashboardItem>
                                     <t t-component="item.Component" t-props="item.props(statistics)" />
@@ -21,5 +25,21 @@
                 </div>
             </div>
         </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <Dialog title="'Configure Dashboard Items'">
+            <p>Which cards would you like to display?</p>
+	        <t t-foreach="itemsState" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+	        <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 </templates>
