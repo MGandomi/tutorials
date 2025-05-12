@@ -16,14 +16,12 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
         this.items = registry.category("awesome_dashboard").getAll() || [];
-        // استفاده از useState برای ذخیره disabledItems
         this.disabledItems = useState(
             (localStorage.getItem("disabledDashboardItems")?.split(",") || [])
         );
         this.dialog = useService('dialog');
     }
 
-    // تابع فیلتر کردن آیتم‌ها بر اساس disabledItems
     get filteredItems() {
         return this.items.filter(item => !this.disabledItems.includes(item.id));
     }
@@ -51,7 +49,6 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    // به‌روزرسانی disabledItems و ذخیره آن در localStorage
     updateConfiguration(newDisabledItems) {
         this.disabledItems = newDisabledItems;
         localStorage.setItem("disabledDashboardItems", newDisabledItems.join(","));

@@ -13,7 +13,6 @@
 
                 <div class="cards rounded p-4" t-if="statistics.isReady">
                     <div class="row g-4">
-                        <!-- Use filteredItems instead of items -->
                         <t t-foreach="filteredItems" t-as="item" t-key="item.id">
                             <div class="col-12 col-md-4">
                                 <DashboardItem>
