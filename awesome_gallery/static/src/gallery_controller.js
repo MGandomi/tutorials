@@ -1,8 +1,9 @@
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
-import { KeepLast } from "@web/core/utils/concurrency";
 import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
 import { standardViewProps } from "@web/views/standard_view_props";
+import { GalleryModel } from "./gallery_model";
+import { GalleryRenderer } from "./gallery_renderer";
 
 export class GalleryController extends Component {
     static template = "awesome_gallery.GalleryController";
@@ -10,42 +11,26 @@ export class GalleryController extends Component {
         ...standardViewProps,
         archInfo: Object,
     };
-    static components = { Layout };
+    static components = { Layout, GalleryRenderer };
 
     setup() {
         this.orm = useService("orm");
-        this.images = useState({ data: [] });
-        this.keeplast = new KeepLast();
 
-        const loadAndSetImages = async (domain) => {
-            const { records } = await this.loadImages(domain);
-            this.images.data = records;
-        };
+        this.model = useState(
+            new GalleryModel(
+                this.orm,
+                this.props.resModel,
+                this.props.archInfo,
+            )
+        );
+        onWillStart(async () => {
+            await this.model.load(this.props.domain);
+        });
 
-        onWillStart(() => loadAndSetImages(this.props.domain));
-
-        onWillUpdateProps((nextProps) => {
+        onWillUpdateProps(async (nextProps) => {
             if (JSON.stringify(nextProps.domain) !== JSON.stringify(this.props.domain)) {
-                return loadAndSetImages(nextProps.domain);
+                await this.model.load(nextProps.domain);
             }
         });
-    }
-
-    loadImages(domain) {
-        if (!this.props.archInfo || !this.props.archInfo.imageField) {
-            return Promise.resolve({ records: [] });
-        }
-
-        return this.keeplast.add(
-            this.orm.webSearchRead(this.props.resModel, domain, {
-                limit: this.props.archInfo.limit,
-                specification: {
-                    [this.props.archInfo.imageField]: {},
-                },
-                context: {
-                    bin_size: true,
-                },
-            })
-        );
     }
 }
