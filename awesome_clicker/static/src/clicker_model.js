@@ -1,5 +1,7 @@
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
+import { rewards } from "./click_rewards";
+import { choose } from "./utils";
 
 export class ClickerModel extends Reactive {
     constructor() {
@@ -21,17 +23,13 @@ export class ClickerModel extends Reactive {
                 purchased: 0,
             }
         };
-        this.multiplier = 1
+        this.multiplier = 1;
     }
 
     addClick() {
         this.increment(1);
     }
 
-    /**
-     * This method is supposed to be periodically called by outside code, at some
-     * proper interval
-     */
     tick() {
         for (const bot in this.bots) {
             this.clicks += this.bots[bot].increment * this.bots[bot].purchased * this.multiplier;
@@ -54,6 +52,9 @@ export class ClickerModel extends Reactive {
         ) {
             this.bus.trigger("MILESTONE", this.milestones[this.level]);
             this.level += 1;
+
+            const reward = this.giveReward();
+            this.bus.trigger("REWARD", reward);
         }
     }
 
@@ -67,6 +68,16 @@ export class ClickerModel extends Reactive {
 
         this.clicks -= this.bots[name].price;
         this.bots[name].purchased += 1;
+    }
+
+    giveReward() {
+        const availableReward = rewards.filter(
+            r => (!r.minLevel || this.level >= r.minLevel) &&
+                 (!r.maxLevel || this.level <= r.maxLevel)
+        );
+        const reward = choose(availableReward);
+        reward.apply(this);
+        return reward;
     }
 
     get milestones() {
