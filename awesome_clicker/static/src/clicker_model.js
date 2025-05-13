@@ -1,3 +1,5 @@
+// مدل کلیکر با اصلاحات برای خرید multiplier
+
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { rewards } from "./click_rewards";
@@ -11,13 +13,13 @@ export class ClickerModel extends Reactive {
         this.bus = new EventBus();
         this.bots = {
             clickbot: {
-                price: 1000,
+                price: 10,
                 level: 1,
                 increment: 10,
                 purchased: 0,
             },
             bigbot: {
-                price: 5000,
+                price: 100,
                 level: 2,
                 increment: 100,
                 purchased: 0,
@@ -36,12 +38,14 @@ export class ClickerModel extends Reactive {
         }
     }
 
+    // خرید multiplier با قیمت پایین‌تر
     buyMultiplier() {
-        if (this.clicks < 50000) {
+        if (this.clicks < 100) {  // قیمت خرید multiplier رو به 100 تغییر دادیم
             return false;
         }
-        this.clicks -= 50000;
-        this.multiplier++;
+        this.clicks -= 100;  // کاهش کلیک‌ها پس از خرید multiplier
+        this.multiplier++;   // افزایش multiplier
+        return true;         // تایید اینکه خرید موفقیت‌آمیز بوده
     }
 
     increment(inc) {
@@ -52,9 +56,6 @@ export class ClickerModel extends Reactive {
         ) {
             this.bus.trigger("MILESTONE", this.milestones[this.level]);
             this.level += 1;
-
-            const reward = this.giveReward();
-            this.bus.trigger("REWARD", reward);
         }
     }
 
@@ -71,20 +72,24 @@ export class ClickerModel extends Reactive {
     }
 
     giveReward() {
-        const availableReward = rewards.filter(
-            r => (!r.minLevel || this.level >= r.minLevel) &&
-                 (!r.maxLevel || this.level <= r.maxLevel)
-        );
+        const availableReward = [];
+        for (const reward of rewards) {
+            if (reward.minLevel <= this.level || !reward.minLevel) {
+                if (reward.maxLevel >= this.level || !reward.maxLevel) {
+                    availableReward.push(reward);
+                }
+            }
+        }
         const reward = choose(availableReward);
-        reward.apply(this);
+        this.bus.trigger("REWARD", reward);
         return reward;
     }
 
     get milestones() {
         return [
-            { clicks: 1000, unlock: "clickBot" },
-            { clicks: 5000, unlock: "bigBot" },
-            { clicks: 100000, unlock: "power multiplier" },
+            { clicks: 5, unlock: "clickBot" },
+            { clicks: 20, unlock: "bigBot" },
+            { clicks: 200, unlock: "power multiplier" },
         ];
     }
 }
