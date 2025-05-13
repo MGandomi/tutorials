@@ -1,5 +1,3 @@
-// مدل کلیکر با اصلاحات برای خرید multiplier
-
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { rewards } from "./click_rewards";
@@ -19,33 +17,60 @@ export class ClickerModel extends Reactive {
                 purchased: 0,
             },
             bigbot: {
-                price: 100,
+                price: 20,
                 level: 2,
-                increment: 100,
+                increment: 1000,
                 purchased: 0,
             }
         };
+        this.trees = {
+            pearTree: {
+                price: 100,
+                level: 4,
+                produce: "pear",
+                purchased: 0,
+            },
+            cherryTree: {
+                price: 100,
+                level: 4,
+                produce: "cherry",
+                purchased: 0,
+            },
+        }
+        this.fruits = {
+            pear: 0,
+            cherry: 0,
+        };
         this.multiplier = 1;
+        this.ticks = 0;
     }
 
     addClick() {
         this.increment(1);
     }
 
+    /**
+     * This method is supposed to be periodically called by outside code, at some
+     * proper interval
+     */
     tick() {
+        this.ticks++;
         for (const bot in this.bots) {
             this.clicks += this.bots[bot].increment * this.bots[bot].purchased * this.multiplier;
         }
+        if (this.ticks % 3 === 0) {
+            for (const tree in this.trees) {
+                this.fruits[this.trees[tree].produce] += this.trees[tree].purchased;
+            }
+        }
     }
 
-    // خرید multiplier با قیمت پایین‌تر
     buyMultiplier() {
-        if (this.clicks < 100) {  // قیمت خرید multiplier رو به 100 تغییر دادیم
+        if (this.clicks < 50) {
             return false;
         }
-        this.clicks -= 100;  // کاهش کلیک‌ها پس از خرید multiplier
-        this.multiplier++;   // افزایش multiplier
-        return true;         // تایید اینکه خرید موفقیت‌آمیز بوده
+        this.clicks -= 50;
+        this.multiplier++;
     }
 
     increment(inc) {
@@ -82,14 +107,28 @@ export class ClickerModel extends Reactive {
         }
         const reward = choose(availableReward);
         this.bus.trigger("REWARD", reward);
-        return reward;
+        return choose(availableReward);
+    }
+
+    buyTree(name) {
+        if (!Object.keys(this.trees).includes(name)) {
+            throw new Error(`Invalid tree name ${name}`);
+        }
+        if (this.clicks < this.trees[name].price) {
+            return false;
+        }
+        this.clicks -= this.trees[name].price;
+        this.trees[name].purchased += 1;
     }
 
     get milestones() {
         return [
-            { clicks: 5, unlock: "clickBot" },
+            { clicks: 10, unlock: "clickBot" },
             { clicks: 20, unlock: "bigBot" },
-            { clicks: 200, unlock: "power multiplier" },
+            { clicks: 50, unlock: "power multiplier" },
+            { clicks: 100, unlock: "pear tree & cherry tree" },
         ];
     }
+
+
 }
