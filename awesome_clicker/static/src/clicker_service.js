@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { ClickerModel } from "./clicker_model";
+import {registry} from "@web/core/registry";
+import {ClickerModel} from "./clicker_model";
 
 const clickerService = {
     dependencies: ["effect"],
@@ -11,10 +11,10 @@ const clickerService = {
             model.tick();
         }, 10000);
         const bus = model.bus;
-        bus.addEventListener("MILESTONE_1k", () => {
-            services.effect.add({
-                message: "Milestone reached! You can now buy clickbots",
-                type: "rainbow_man",
+	    bus.addEventListener("MILESTONE", (ev) => {
+		    services.effect.add({
+			    message: `Milestone reached! You can now buy ${ev.detail.unlock}`,
+			    type: "rainbow_man",
             });
         });
 
