@@ -1,7 +1,7 @@
-import { Reactive } from "@web/core/utils/reactive";
-import { EventBus } from "@odoo/owl";
-import { rewards } from "./click_rewards";
-import { choose } from "./utils";
+import {Reactive} from "@web/core/utils/reactive";
+import {EventBus} from "@odoo/owl";
+import {rewards} from "./click_rewards";
+import {choose} from "./utils";
 
 export class ClickerModel extends Reactive {
     constructor() {
@@ -120,6 +120,20 @@ export class ClickerModel extends Reactive {
         this.clicks -= this.trees[name].price;
         this.trees[name].purchased += 1;
     }
+
+	toJSON() {
+		const json = Object.assign({}, this);
+		delete json["bus"];
+		return json;
+
+	}
+
+	static fromJSON(json) {
+		const clicker = new ClickerModel();
+		const clickerInstance = Object.assign(clicker, json);
+		return clickerInstance;
+	}
+
 
     get milestones() {
         return [
