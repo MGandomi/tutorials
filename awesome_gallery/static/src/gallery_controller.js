@@ -1,9 +1,8 @@
-import {Layout} from "@web/search/layout";
-import {useService} from "@web/core/utils/hooks";
-import {Component, onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
-import {standardViewProps} from "@web/views/standard_view_props";
+import { Layout } from "@web/search/layout";
+import { useService } from "@web/core/utils/hooks";
+import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
+import { standardViewProps } from "@web/views/standard_view_props";
 import { usePager } from "@web/search/pager_hook";
-
 
 export class GalleryController extends Component {
     static template = "awesome_gallery.GalleryController";
@@ -22,12 +21,12 @@ export class GalleryController extends Component {
             new this.props.Model(
                 this.orm,
                 this.props.resModel,
-	            this.props.fields,
+                this.props.fields,
                 this.props.archInfo,
             )
         );
 
-		usePager(() => {
+        usePager(() => {
             return {
                 offset: this.model.pager.offset,
                 limit: this.model.pager.limit,
@@ -49,5 +48,9 @@ export class GalleryController extends Component {
                 await this.model.load(nextProps.domain);
             }
         });
+    }
+
+    async onImageUpload(record_id, image_binary) {
+        this.model.uploadImage(record_id, image_binary, this.props.domain);
     }
 }
