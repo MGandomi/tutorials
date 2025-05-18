@@ -1,7 +1,7 @@
-import { Layout } from "@web/search/layout";
-import { useService } from "@web/core/utils/hooks";
-import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
-import { standardViewProps } from "@web/views/standard_view_props";
+import {Layout} from "@web/search/layout";
+import {useService} from "@web/core/utils/hooks";
+import {Component, onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
+import {standardViewProps} from "@web/views/standard_view_props";
 
 export class GalleryController extends Component {
     static template = "awesome_gallery.GalleryController";
@@ -20,6 +20,7 @@ export class GalleryController extends Component {
             new this.props.Model(
                 this.orm,
                 this.props.resModel,
+	            this.props.fields,
                 this.props.archInfo,
             )
         );
