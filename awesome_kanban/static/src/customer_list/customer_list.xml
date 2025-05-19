@@ -5,8 +5,8 @@
             <thead>
                 <tr>
                     <td>
-                        <h3>Customers with active orders</h3>
-	                    <div class="form-check">
+                        <span>Customers with active orders</span>
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" t-on-change="onChangeActiveCustomers"/>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Active customers
@@ -16,8 +16,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr t-foreach="partners.data" t-as="partner" t-key="partner.id" class="o_awesome_kanban_customer_hover">
-                    <td class="cursor-pointer" t-esc="partner.display_name" t-on-click="() => props.selectCustomer(partner.id , partner.display_name)" />
+                <tr>
+                    <td>
+                        <input class="o_input w-100" placeholder="Filter customers" t-on-input="onCustomerFilter"/>
+                    </td>
+                </tr>
+                <tr t-foreach="displayedPartners.data" t-as="partner" t-key="partner.id" class="o_awesome_kanban_customer_hover">
+                    <td class="cursor-pointer" t-esc="partner.display_name" t-on-click="() => props.selectCustomer(partner.id, partner.display_name)" />
                 </tr>
             </tbody>
         </table>
